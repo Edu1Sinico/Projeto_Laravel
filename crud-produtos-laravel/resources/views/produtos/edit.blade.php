@@ -4,14 +4,14 @@
 
 @section('content')
 
-<h1>Editar Produto</h1>
+<h1 class="mb-4">Editar Produto</h1>
 
 {{-- Exibe uma mensagem de erro se houver uma na sessão --}}
 @if ($errors->any())
-<div>
+<div class="alert alert-danger">
     <strong>Foram encontrados erros:</strong>
 
-    <ul>
+    <ul class="mb-0">
         {{-- Itera sobre todos os erros e exibe cada um em uma lista --}}
         @foreach ($errors->all() as $error)
         <li> {{ $error }} </li>
@@ -27,36 +27,40 @@
     {{-- Especificando que o método HTTP é PUT para atualização do recurso --}}
     @method('PUT')
 
-    <div>
-        <label for="nome">Nome:</label><br>
+    <div class="mb-3">
+        <label for="nome" class="form-label">Nome:</label>
         {{-- O old('nome', $produto->nome) é usado para manter o valor do campo caso haja um erro de validação e a página seja recarregada, ou para preencher com o valor atual do produto --}}
-        <input type="text" name="nome" id="nome" value="{{ old('nome', $produto->nome) }}">
+        <input type="text" name="nome" id="nome" class="form-control" value="{{ old('nome', $produto->nome) }}">
     </div>
 
-    <div>
-        <label for="descricao">Descrição:</label><br>
-        <textarea name="descricao" id="descricao">{{ old('descricao', $produto->descricao) }}</textarea>
+    <div class="mb-3">
+        <label for="descricao" class="form-label">Descrição:</label>
+        <textarea name="descricao" id="descricao" class="form-control" rows="4">{{ old('descricao', $produto->descricao) }}</textarea>
     </div>
 
-    <div>
-        <label for="preco">Preço:</label><br>
-        <input type="number" name="preco" id="preco" step="0.01" value="{{ old('preco', $produto->preco) }}">
+    <div class="mb-3">
+        <label for="preco" class="form-label">Preço:</label>
+        <input type="number" name="preco" id="preco" class="form-control" step="0.01" value="{{ old('preco', $produto->preco) }}">
     </div>
 
-    <div>
-        <label for="quantidade">Quantidade:</label><br>
-        <input type="number" name="quantidade" id="quantidade" value="{{ old('quantidade', $produto->quantidade) }}">
+    <div class="mb-3">
+        <label for="quantidade" class="form-label">Quantidade:</label>
+        <input type="number" name="quantidade" id="quantidade" class="form-control" value="{{ old('quantidade', $produto->quantidade) }}">
     </div>
 
     <br>
 
-    <button type="submit">Atualizar</button>
+    <div class="d-flex justify-content-between align-items-center">
+        <button type="submit" class="btn btn-success">
+            Atualizar
+        </button>
+
+        <a href="{{ route('produtos.index') }}" class="btn btn-secondary">
+            Voltar
+        </a>
+    </div>
 </form>
 
-<button>
-    <a href="{{ route('produtos.index') }}" style="text-decoration: none; color: inherit;">
-        Voltar
-    </a>
-</button>
+
 
 @endsection

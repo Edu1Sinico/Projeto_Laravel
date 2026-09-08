@@ -26,7 +26,7 @@
     {{ $produto->quantidade }}
 </p>
 
-<a href="{{ route('produtos.index') }}">
+<a href="{{ route('produtos.index') }}" class="btn btn-secondary">
     Voltar
 </a>
 
