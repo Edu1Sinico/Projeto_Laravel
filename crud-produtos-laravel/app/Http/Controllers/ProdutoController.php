@@ -39,8 +39,10 @@ class ProdutoController extends Controller
         // Criação do produto utilizando Eloquent ORM
         Produto::create($request->all());
 
-        // Redireciona para a listagem de produtos
-        return redirect()->route('produtos.index');
+        // Redireciona para a listagem de produtos com uma mensagem de sucesso
+        return redirect()
+            ->route('produtos.index')
+            ->with('success', 'Produto cadastrado com sucesso.');
     }
 
     // Exibe os detalhes de um produto específico
@@ -69,8 +71,10 @@ class ProdutoController extends Controller
         // Atualiza o produto utilizando Eloquent ORM
         $produto->update($request->all());
 
-        // Redireciona para a listagem
-        return redirect()->route('produtos.index');
+        // Redireciona para a listagem com uma mensagem de sucesso
+        return redirect()
+            ->route('produtos.index')
+            ->with('success', 'Produto atualizado com sucesso.');
     }
 
     // Exclui um produto do banco de dados
@@ -79,7 +83,9 @@ class ProdutoController extends Controller
         // Exclui o produto utilizando Eloquent ORM
         $produto->delete();
 
-        // Redireciona para a listagem de produtos
-        return redirect()->route('produtos.index');
+        // Redireciona para a listagem de produtos com uma mensagem de sucesso
+        return redirect()
+            ->route('produtos.index')
+            ->with('success', 'Produto excluído com sucesso.');
     }
 }

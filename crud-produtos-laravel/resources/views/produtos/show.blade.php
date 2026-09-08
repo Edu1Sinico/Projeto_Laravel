@@ -1,3 +1,9 @@
+@extends('layouts.app')
+
+@section('title', 'Detalhes do Produto')
+
+@section('content')
+
 <h1>Detalhes do Produto</h1>
 
 <p>
@@ -23,3 +29,5 @@
 <a href="{{ route('produtos.index') }}">
     Voltar
 </a>
+
+@endsection
