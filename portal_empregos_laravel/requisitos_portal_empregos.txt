@@ -1,0 +1,20 @@
+Requisitos Portal de Empregos - Projeto Laravel
+
+Usuários:
+
+• Candidatos:
+	- Cadastrar seu perfil
+	- Cadastrar seu currículo
+	- Se candidatar para vagas
+
+• Empresas:
+	- Cadastrar a empresa
+	- Publicar oportunidades de emprego (gerenciamento)
+
+Outras funcionalidades:
+	- Filtragem de vagas
+	- Autenticação e autorização de usuários
+	- Dashboards para administração das funcionalidades
+
+
+
