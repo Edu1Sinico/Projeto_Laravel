@@ -1,20 +1,88 @@
 Requisitos Portal de Empregos - Projeto Laravel
 
-Usuários:
+Escopo:
 
-• Candidatos:
-	- Cadastrar seu perfil
-	- Cadastrar seu currículo
-	- Se candidatar para vagas
+O projeto consiste no desenvolvimento de uma plataforma web de vagas de emprego utilizando
+Laravel. O sistema permitirá que candidatos criem contas, cadastrem seus currículos e se
+candidatem a vagas de emprego. Empresas poderão se cadastrar, criar e gerenciar vagas de
+emprego, bem como visualizar as candidaturas recebidas. O sistema incluirá também
+funcionalidades de pesquisa e filtragem de vagas, autenticação e autorização de usuários, e
+dashboards para administração das funcionalidades.
 
-• Empresas:
-	- Cadastrar a empresa
-	- Publicar oportunidades de emprego (gerenciamento)
 
-Outras funcionalidades:
-	- Filtragem de vagas
-	- Autenticação e autorização de usuários
-	- Dashboards para administração das funcionalidades
+1. Usuários/Atores:
 
+• Candidatos
+• Empresas
+• Administrador
+
+2. Requisitos Funcionais e Não Funcionais:
+
+Funcionais:
+
+• RF01: Candidatos e empresas podem criar contas na plataforma
+• RF02: Candidatos poderão cadastrar e gerenciar seus currículos
+• RF03: Candidatos poderão se candidatar para as vagas
+• RF04: Empresas poderão publicar vaga de emprego:
+	- Realizar o gerenciamento da vaga:
+		- Cadastrar uma ou várias vagas
+		- Visualizar a(s) vaga(s) publicada e candidaturas recebidas
+		- Alterar as informações da vaga ou realizar o fechamento do mesmo
+		- Excluir uma vaga publicada
+
+• RF05: Funcionalidades de pesquisas e filtragem de vagas
+• RF06: Autenticação dos usuários
+• RF07: Comunicação entre o candidato e o contratante da empresa
+• RF08: Dashboards para administração das funcionalidades:
+	- Empresas poderão checar quantos candidatos se candidataram para vaga
+	- Empresas poderão ver o aumento de candidatos na plataforma em um setor específico
+	- Candidatos poderão verificar quantas vezes uma empresa postou determinada vaga
+	- Candidatos poderão receber vagas similares em que ele se candidatou
+	- Candidatos poderão verificar faixa salarial da empresa (tipo o glassdoor)
+	- Candidatos poderão total de inscrições realizadas para uma determinada vaga
+• RF09: Administradores realizam o gerenciamento da plataforma
+
+Não Funcionais:
+
+• RNF01: Criptografia de senha para os usuários
+• RNF02: Token de autenticação com tempo de time out
+• RNF03: Garantir segurança dos dados dos usuários na plataforma
+• RNF04: Promover uma solução escalável conforme o crescimento da base de usuários.
+
+
+3. Regras de Negócio:
+
+Para os usuários:
+• A senha deve ter no mínimo 6 caracteres
+
+Restrições:
+• Candidatos podem cadastrar no máximo 1 currículo
+• Empresas possuem um limite de cadastro de vagas (máximo 10)
+• Um candidato não pode se inscrever duas vezes na mesma vaga.
+
+(Verificar se podemos colocar mais algo)
+
+4. Entidades:
+
+• Usuarios
+	- Candidato
+	- Empresa
+	- Administrador
+• Vagas
+• Inscricao
+• Currículos
+
+5. Relacionamentos:
+
+• Usuários possuí:
+	- Candidatos
+	- Empresas
+	- Administradores
+
+• Um candidato possui 1 currículo, mas o currículo pode ser cadastrado por diversos candidatos.
+
+• Uma vaga pertence a uma empresa, mas a empresa pode ter diversas vagas.
+
+• Um candidato pode se candidatar em diversas vagas, a mesma vaga pode receber diversos candidatos (n:n) <- resolver isso
 
 
