@@ -8,7 +8,7 @@ Este README serve como um guia rápido para relembrar o processo inicial de conf
 
 No Windows:
 
-1. Baixe o PHP pelo site oficial: https://www.php.net/
+1. Baixe o PHP 8.X pelo site oficial: https://www.php.net/
 2. Extraia o arquivo ZIP para uma pasta, por exemplo:
 
 ```text
