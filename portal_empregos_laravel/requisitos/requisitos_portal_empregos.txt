@@ -55,6 +55,7 @@ Não Funcionais:
 • A senha deve ter no mínimo 6 caracteres
 • E-mail deve ser único na plataforma.
 • Um candidato possui no máximo um currículo.
+• Um candidato pode possuir apenas um currículo ativo (substituir o currículo anterior).
 • Empresas possuem um limite de cadastro de vagas simultâneas (máximo 10)
 • Um candidato não pode se inscrever duas vezes na mesma vaga.
 • Apenas usuários do tipo empresa podem criar, alterar, fechar ou excluir vagas.
@@ -91,7 +92,8 @@ Atributos de cada entidade:
 • Curriculo
 	- id
 	- id_usuario
-	- arquivo_pdf
+	- arquivo_caminho
+	- arquivo_nome
 	- data_criacao
 	- data_atualizacao 
 
@@ -123,7 +125,7 @@ Atributos de cada entidade:
 	- id
 	- status (disponível, indisponível, cancelada)
 
-• Status_vaga
+• Status_inscricao
 	- id
 	- status (pendente, aprovado, rejeitado, desistência)
 
@@ -131,7 +133,7 @@ Atributos de cada entidade:
 
 • Usuários possui somente 1 tipo, mas o tipo de usuário pode estar presente em diversos usuários (usuario n - 1 tipo_usuario)
 
-• Um candidato possui 1 currículo e um currículo pertence a um candidato (usuario 1 - 1 currículo)
+• Um candidato possui 1 currículo e um currículo pertence a um candidato (usuario 1 - 0..1 currículo)
 
 • Uma vaga pertence a uma empresa, mas a empresa pode ter diversas vagas. (vaga n - 1 empresa)
 
