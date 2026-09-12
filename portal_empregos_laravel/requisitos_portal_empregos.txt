@@ -32,35 +32,37 @@ Funcionais:
 
 • RF05: Funcionalidades de pesquisas e filtragem de vagas
 • RF06: Autenticação dos usuários
-• RF07: Comunicação entre o candidato e o contratante da empresa
-• RF08: Dashboards para administração das funcionalidades:
+• RF07: Dashboards para administração das funcionalidades:
 	- Empresas poderão checar quantos candidatos se candidataram para vaga
 	- Empresas poderão ver o aumento de candidatos na plataforma em um setor específico
-	- Candidatos poderão verificar quantas vezes uma empresa postou determinada vaga
-	- Candidatos poderão receber vagas similares em que ele se candidatou
-	- Candidatos poderão verificar faixa salarial da empresa (tipo o glassdoor)
 	- Candidatos poderão total de inscrições realizadas para uma determinada vaga
-• RF09: Administradores realizam o gerenciamento da plataforma
+• RF08: Administradores realizam o gerenciamento da plataforma:
+	- visualizar usuários cadastrados;
+	- bloquear/desativar usuários;
+	- visualizar vagas;
+	- remover vagas inadequadas.
 
 Não Funcionais:
 
-• RNF01: Criptografia de senha para os usuários
-• RNF02: Token de autenticação com tempo de time out
-• RNF03: Garantir segurança dos dados dos usuários na plataforma
+• RNF01: As senhas dos usuários devem ser armazenadas utilizando hash seguro.
+• RNF02: Sessões autenticadas devem expirar após período definido de inatividade.
+• RNF03: O sistema deve proteger dados e funcionalidades contra acessos não autorizados.
 • RNF04: Promover uma solução escalável conforme o crescimento da base de usuários.
 
 
 3. Regras de Negócio:
 
-Para os usuários:
 • A senha deve ter no mínimo 6 caracteres
-
-Restrições:
-• Candidatos podem cadastrar no máximo 1 currículo
-• Empresas possuem um limite de cadastro de vagas (máximo 10)
+• E-mail deve ser único na plataforma.
+• Um candidato possui no máximo um currículo.
+• Empresas possuem um limite de cadastro de vagas simultâneas (máximo 10)
 • Um candidato não pode se inscrever duas vezes na mesma vaga.
-
-(Verificar se podemos colocar mais algo)
+• Apenas usuários do tipo empresa podem criar, alterar, fechar ou excluir vagas.
+• Uma empresa só pode alterar/excluir vagas pertencentes a ela.
+• Apenas candidatos podem se candidatar a vagas.
+• Não é permitido candidatar-se a uma vaga fechada.
+• Uma inscrição deve possuir um status válido, como pendente, aprovada ou rejeitada.
+• Somente a empresa responsável pela vaga pode visualizar/alterar o status das candidaturas recebidas.
 
 4. Entidades:
 
@@ -68,21 +70,73 @@ Restrições:
 	- Candidato
 	- Empresa
 	- Administrador
+• Tipo_usuario
 • Vagas
-• Inscricao
+• Status_vaga
+• Inscrição
+• Status_inscricao
 • Currículos
+
+
+Atributos de cada entidade:
+• Usuarios
+	- id
+	- nome
+	- email
+	- senha
+	- tipo
+	- data_criacao
+	- data_atualizacao 
+
+• Curriculo
+	- id
+	- id_usuario
+	- arquivo_pdf
+	- data_criacao
+	- data_atualizacao 
+
+• Vagas
+	- id
+	- id_empresa
+	- titulo
+	- descricao
+	- localizacao
+	- salario
+	- status
+	- data_publicao
+	- data_fechamento
+	- data_atualizacao 
+
+• Inscricao
+	- id
+	- id_candidato
+	- id_vaga
+	- status
+	- data_inscricao
+	- data_atualizacao 
+
+• Tipo_usuario
+	- id
+	- tipo (empresa, candidato, administrador)
+
+• Status_vaga
+	- id
+	- status (disponível, indisponível, cancelada)
+
+• Status_vaga
+	- id
+	- status (pendente, aprovado, rejeitado, desistência)
 
 5. Relacionamentos:
 
-• Usuários possuí:
-	- Candidatos
-	- Empresas
-	- Administradores
+• Usuários possui somente 1 tipo, mas o tipo de usuário pode estar presente em diversos usuários (usuario n - 1 tipo_usuario)
 
-• Um candidato possui 1 currículo, mas o currículo pode ser cadastrado por diversos candidatos.
+• Um candidato possui 1 currículo e um currículo pertence a um candidato (usuario 1 - 1 currículo)
 
-• Uma vaga pertence a uma empresa, mas a empresa pode ter diversas vagas.
+• Uma vaga pertence a uma empresa, mas a empresa pode ter diversas vagas. (vaga n - 1 empresa)
 
-• Um candidato pode se candidatar em diversas vagas, a mesma vaga pode receber diversos candidatos (n:n) <- resolver isso
+• Um candidato pode se candidatar em diversas vagas, a mesma vaga pode receber diversos candidatos (n:n)  (candidato 1 - n inscricao n - 1 vaga)
 
+• Uma vaga terá somente um status, mas os status aparecerá em diversas vaga (vaga n - 1 status_vaga)
 
+• Uma inscrição terá somente um status, mas os status aparecerá em diversas inscrições (inscricao n - 1 status_inscricao)
