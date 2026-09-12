@@ -85,7 +85,7 @@ Atributos de cada entidade:
 	- nome
 	- email
 	- senha
-	- tipo
+	- id_tipo
 	- data_criacao
 	- data_atualizacao 
 
@@ -100,11 +100,11 @@ Atributos de cada entidade:
 • Vagas
 	- id
 	- id_empresa
+	- id_status
 	- titulo
 	- descricao
 	- localizacao
 	- salario
-	- status
 	- data_publicao
 	- data_fechamento
 	- data_atualizacao 
@@ -113,7 +113,7 @@ Atributos de cada entidade:
 	- id
 	- id_candidato
 	- id_vaga
-	- status
+	- id_status
 	- data_inscricao
 	- data_atualizacao 
 
