@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class vagas extends Model
+class Vaga extends Model
 {
     protected $fillable = [
         'id',
