@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Usuario extends Model
+// Para a autenticação funcionar, a classe de usuário precisa extender da classe "Authenticatable" (User)
+class Usuario extends Authenticatable
 {
     protected $fillable = [
         'id',
