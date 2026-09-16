@@ -3,6 +3,9 @@
 use App\Http\Controllers\UsuarioController;
 use Illuminate\Support\Facades\Route;
 
+
+
+
 // Rota de testes para a página 'home'
 Route::get('/home', function () {
     return view('home');
@@ -28,3 +31,13 @@ Route::post('/registro', [UsuarioController::class, 'registro'])
 // Rota para a função de logout
 Route::post('/logout', [UsuarioController::class, 'logout'])
     ->name('usuarios.logout');
+
+// Testes com Middlewares de autenticação de tipos de usuários (remover depois)
+
+Route::middleware(['auth', 'tipo:1'])->get('/teste-candidato', function () {
+    return 'Área do candidato';
+});
+
+Route::middleware(['auth', 'tipo:2'])->get('/teste-empresa', function () {
+    return 'Área da empresa';
+});

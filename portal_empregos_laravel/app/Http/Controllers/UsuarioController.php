@@ -74,7 +74,7 @@ class UsuarioController extends Controller
 
         // Redirecionando para a tela de login
         return redirect()
-            ->route('usuarios.login')
+            ->route('login')
             ->with('success', 'Usuário cadastrado com sucesso.');
     }
 
@@ -88,7 +88,7 @@ class UsuarioController extends Controller
         $request->session()->regenerateToken(); // gera um novo token CSRF por segurança.
 
         return redirect()
-            ->route('usuarios.login')
+            ->route('login')
             ->with('sucess', 'Logout realizado com sucesso.');
     }
 }
