@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CurriculoController;
 use App\Http\Controllers\UsuarioController;
 use Illuminate\Support\Facades\Route;
 
@@ -32,12 +33,23 @@ Route::post('/registro', [UsuarioController::class, 'registro'])
 Route::post('/logout', [UsuarioController::class, 'logout'])
     ->name('usuarios.logout');
 
-// Testes com Middlewares de autenticação de tipos de usuários (remover depois)
+// GRUPO DE CANDIDATOS
 
-Route::middleware(['auth', 'tipo:1'])->get('/teste-candidato', function () {
-    return 'Área do candidato';
+// Middleware para as páginas do candidatos
+Route::middleware(['auth', 'tipo:1'])->group(function () {
+
+    // Rota para função de cadastrar o currículo
+    Route::post('/curriculo', [CurriculoController::class, 'store'])
+        ->name('curriculos.store');
+
+    // Rota para o formulário de cadastro do currículo
+    Route::get('/curriculo/create', [CurriculoController::class, 'create'])
+        ->name('curriculos.create');
 });
 
-Route::middleware(['auth', 'tipo:2'])->get('/teste-empresa', function () {
+// GRUPO DE EMPRESAS
+
+// Middleware para as páginas das empresas
+Route::middleware(['auth', 'tipo:2'])->group(function () {
     return 'Área da empresa';
 });
