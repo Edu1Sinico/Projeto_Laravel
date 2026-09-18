@@ -14,7 +14,6 @@ dashboards para administração das funcionalidades.
 
 • Candidatos
 • Empresas
-• Administrador
 
 2. Requisitos Funcionais e Não Funcionais:
 
@@ -36,11 +35,6 @@ Funcionais:
 	- Empresas poderão checar quantos candidatos se candidataram para vaga
 	- Empresas poderão ver o aumento de candidatos na plataforma em um setor específico
 	- Candidatos poderão total de inscrições realizadas para uma determinada vaga
-• RF08: Administradores realizam o gerenciamento da plataforma:
-	- visualizar usuários cadastrados;
-	- bloquear/desativar usuários;
-	- visualizar vagas;
-	- remover vagas inadequadas.
 
 Não Funcionais:
 
@@ -70,7 +64,6 @@ Não Funcionais:
 • Usuarios
 	- Candidato
 	- Empresa
-	- Administrador
 • Tipo_usuario
 • Vagas
 • Status_vaga
