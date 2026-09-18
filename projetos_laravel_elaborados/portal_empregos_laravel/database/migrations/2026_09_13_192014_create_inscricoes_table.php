@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('curriculos', function (Blueprint $table) {
+        Schema::create('inscricaos', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('idUsuario')->constrained('usuarios');
-            $table->string('arquivoCaminho');
-            $table->string('arquivoNome');
+            $table->foreignId('idCandidato')->constrained('usuarios');
+            $table->foreignId('idVaga')->constrained('vagas');
+            $table->foreignId('idStatus')->constrained('status_inscricao');
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('curriculos');
+        Schema::dropIfExists('inscricoes');
     }
 };

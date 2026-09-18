@@ -38,13 +38,17 @@ Route::post('/logout', [UsuarioController::class, 'logout'])
 // Middleware para as páginas do candidatos
 Route::middleware(['auth', 'tipo:1'])->group(function () {
 
+    // Rota para o formulário de cadastro do currículo
+    Route::get('/curriculo/create', [CurriculoController::class, 'create'])
+        ->name('curriculos.create');
+
     // Rota para função de cadastrar o currículo
     Route::post('/curriculo', [CurriculoController::class, 'store'])
         ->name('curriculos.store');
 
-    // Rota para o formulário de cadastro do currículo
-    Route::get('/curriculo/create', [CurriculoController::class, 'create'])
-        ->name('curriculos.create');
+    // Consulta dos currículos do usuário
+    Route::get('/curriculo', [CurriculoController::class, 'show'])
+        ->name('curriculos.show');
 });
 
 // GRUPO DE EMPRESAS
