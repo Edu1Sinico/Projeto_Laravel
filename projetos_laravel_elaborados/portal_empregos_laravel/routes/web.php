@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CurriculoController;
 use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\VagaController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -59,5 +60,10 @@ Route::middleware(['auth', 'tipo:1'])->group(function () {
 
 // Middleware para as páginas das empresas
 Route::middleware(['auth', 'tipo:2'])->group(function () {
-    return 'Área da empresa';
+
+    // Rota completa para o grupo de empresas
+    Route::resource('vagas', VagaController::class);
+
+    Route::patch('/vagas/{vaga}/fechar', [VagaController::class, 'fechar'])
+        ->name('vagas.fechar');
 });

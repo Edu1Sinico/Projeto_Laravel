@@ -16,4 +16,10 @@ class Vaga extends Model
         'salario',
         'dataFechamento'
     ];
+
+    // Realiza o relacionamento entre o status e a vaga
+    public function statusVaga()
+    {
+        return $this->belongsTo(Status_vaga::class, 'idStatus');
+    }
 }
