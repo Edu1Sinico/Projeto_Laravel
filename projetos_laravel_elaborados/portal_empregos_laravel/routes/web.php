@@ -49,6 +49,10 @@ Route::middleware(['auth', 'tipo:1'])->group(function () {
     // Consulta dos currículos do usuário
     Route::get('/curriculo', [CurriculoController::class, 'show'])
         ->name('curriculos.show');
+
+    // Remoção do currículo
+    Route::delete('/curriculo', [CurriculoController::class, 'destroy'])
+        ->name('curriculos.destroy');
 });
 
 // GRUPO DE EMPRESAS

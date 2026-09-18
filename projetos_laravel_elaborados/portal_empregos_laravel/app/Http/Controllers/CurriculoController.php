@@ -72,9 +72,26 @@ class CurriculoController extends Controller
             ->with('success', 'Currículo cadastrado com sucesso.');
     }
 
-    // Função para atualizar (substituir) o currículo
-    public function update(Request $request) {}
-
     // Função para remover o currículo
-    public function destroy(Curriculo $curriculo) {}
+    public function destroy()
+    {
+        $curriculo = Curriculo::where('idUsuario', Auth::id())->first();
+
+        // Retorna para tela inicial do currículo com um erro, caso não encontre o currículo cadastrado.
+        if (!$curriculo) {
+            return redirect()
+                ->route('curriculos.show')
+                ->with('error', 'Nenhum currículo foi encontrado.');
+        }
+
+        // Realiza a remoção do currículo na pasta e também no banco.
+        Storage::disk('public')->delete($curriculo->arquivoCaminho);
+
+        $curriculo->delete();
+
+        // Redireciona para página inicial com uma mensagem de sucesso.
+        return redirect()
+            ->route('curriculos.show')
+            ->with('success', 'Currículo removido com sucesso.');
+    }
 }
