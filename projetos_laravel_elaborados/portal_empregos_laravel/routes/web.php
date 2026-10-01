@@ -39,6 +39,8 @@ Route::post('/logout', [UsuarioController::class, 'logout'])
 // Middleware para as páginas do candidatos
 Route::middleware(['auth', 'tipo:1'])->group(function () {
 
+// CADASTRO DE CURRÍCULOS
+
     // Rota para o formulário de cadastro do currículo
     Route::get('/curriculo/create', [CurriculoController::class, 'create'])
         ->name('curriculos.create');
@@ -54,6 +56,23 @@ Route::middleware(['auth', 'tipo:1'])->group(function () {
     // Remoção do currículo
     Route::delete('/curriculo', [CurriculoController::class, 'destroy'])
         ->name('curriculos.destroy');
+
+// INSCRIÇÕES PARA VAGAS
+
+    // Consultas de vagas disponíveis para inscrição (exclusivo para candidatos)
+    Route::middleware(['auth', 'tipo:1'])->group(function () {
+        Route::get(
+            '/vagas-disponiveis',
+            [VagaController::class, 'vagasDisponiveis']
+        )->name('vagas.disponiveis');
+    });
+
+    // Inscrição para vaga
+    Route::middleware(['auth','tipo:1'])->group(function () {
+        Route::post(
+            '/vagas/{vaga}/candidatar'
+        )->name('inscricoes.store');
+    });
 });
 
 // GRUPO DE EMPRESAS
