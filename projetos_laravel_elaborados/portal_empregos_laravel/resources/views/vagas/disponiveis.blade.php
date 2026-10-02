@@ -1,10 +1,25 @@
-<h1>Vagas Disponíveis</h1>
+<h1>Vagas de Emprego</h1>
 
+@if (session('success'))
+<p>{{ session('success') }}</p>
+@endif
+
+@if(session('error'))
+<p>{{session('error')}}</p>
+@endif
+
+@if ($vagas->isEmpty())
+
+<p>Não há vagas disponíveis no momento.</p>
+
+@else
+
+<h3>Vagas Disponíveis</h3>
 
 @foreach ($vagas as $vaga)
 
 <div>
-    <h2>{{ $vaga->titulo}}</h2>
+    <h2>{{ $vaga->titulo }}</h2>
 
     <p>
         <strong>Status:</strong>
@@ -13,7 +28,7 @@
 
     <p>
         <strong>Descrição:</strong>
-        {{ $vaga->descricao}}
+        {{ $vaga->descricao }}
     </p>
 
 
@@ -47,3 +62,5 @@
 </div>
 
 @endforeach
+
+@endif

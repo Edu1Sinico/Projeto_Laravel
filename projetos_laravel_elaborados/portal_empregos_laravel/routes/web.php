@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CurriculoController;
 use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\InscricaoController;
 use App\Http\Controllers\VagaController;
 use Illuminate\Support\Facades\Route;
 
@@ -39,7 +40,7 @@ Route::post('/logout', [UsuarioController::class, 'logout'])
 // Middleware para as páginas do candidatos
 Route::middleware(['auth', 'tipo:1'])->group(function () {
 
-// CADASTRO DE CURRÍCULOS
+    // CADASTRO DE CURRÍCULOS
 
     // Rota para o formulário de cadastro do currículo
     Route::get('/curriculo/create', [CurriculoController::class, 'create'])
@@ -57,22 +58,21 @@ Route::middleware(['auth', 'tipo:1'])->group(function () {
     Route::delete('/curriculo', [CurriculoController::class, 'destroy'])
         ->name('curriculos.destroy');
 
-// INSCRIÇÕES PARA VAGAS
+    // INSCRIÇÕES PARA VAGAS
 
     // Consultas de vagas disponíveis para inscrição (exclusivo para candidatos)
-    Route::middleware(['auth', 'tipo:1'])->group(function () {
-        Route::get(
-            '/vagas-disponiveis',
-            [VagaController::class, 'vagasDisponiveis']
-        )->name('vagas.disponiveis');
-    });
+    Route::get('/vagas-disponiveis', [VagaController::class, 'vagasDisponiveis'])
+        ->name('vagas.disponiveis');
 
     // Inscrição para vaga
-    Route::middleware(['auth','tipo:1'])->group(function () {
-        Route::post(
-            '/vagas/{vaga}/candidatar'
-        )->name('inscricoes.store');
-    });
+    Route::post('/vagas/{vaga}/candidatar', [InscricaoController::class, 'store'])
+        ->name('inscricoes.store');
+
+    // Vagas candidatadas dos candidatos
+    Route::get('/minhas-candidaturas', [InscricaoController::class, 'index'])
+        ->name('inscricoes.index');
+
+    
 });
 
 // GRUPO DE EMPRESAS

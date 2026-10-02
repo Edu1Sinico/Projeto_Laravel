@@ -11,13 +11,13 @@ use App\Models\StatusVaga;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class IncricaoController
+class InscricaoController
 {
     // Criação do método de inscrição para vaga
     public function store(Vaga $vaga)
     {
         // Verifica se a vaga está disponível
-        $statusDisponivel = Status_vaga::where('status', 'disponível')
+        $statusDisponivel = Status_vaga::where('status', 'Disponível')
             ->firstOrFail();
 
         if ($vaga->idStatus != $statusDisponivel->id) {
@@ -36,7 +36,8 @@ class IncricaoController
         }
 
         // Busca o status inicial da inscrição
-        $statusPendente = Status_inscricao::where('status', 'pendente');
+        $statusPendente = Status_inscricao::where('status', 'pendente')
+            ->firstOrFail();
 
         // Cria a inscrição
         Inscricao::create([
@@ -46,6 +47,17 @@ class IncricaoController
         ]);
 
         return back()
-            ->with('success','Candidatura realizada com sucesso.');
+            ->with('success', 'Candidatura realizada com sucesso.');
+    }
+
+    // Função para realizar as buscas das vagas candidatas dos candidatos
+    public function index()
+    {
+        // Realiza a busca das vagas do candidato autenticado
+        $inscricoes = Inscricao::where('idCandidato', Auth::id())
+            ->with(['vaga', 'statusInscricao']) // Carrega também os relacionametos da classe "inscrição"
+            ->get();
+
+        return view('inscricoes.index', compact('inscricoes'));
     }
 }

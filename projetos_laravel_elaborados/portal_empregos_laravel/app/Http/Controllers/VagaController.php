@@ -23,7 +23,7 @@ class VagaController
     public function vagasDisponiveis()
     {
         // filtra os status "disponível"
-        $statusDisponivel = Status_vaga::where('status', 'disponível')->firstOrFail();
+        $statusDisponivel = Status_vaga::where('status', 'Disponível')->firstOrFail();
 
         // Filtra as vagas disponíveis
         $vagas = Vaga::where(
