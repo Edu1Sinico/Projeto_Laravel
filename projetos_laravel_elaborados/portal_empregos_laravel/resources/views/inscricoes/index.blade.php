@@ -33,6 +33,22 @@
         <strong>Data da candidatura:</strong>
         {{ $inscricao->created_at }}
     </p>
+
+    @if ($inscricao->statusInscricao->status === 'pendente')
+
+    <form
+        action="{{ route('inscricoes.cancelar', $inscricao) }}"
+        method="POST">
+
+        @csrf
+        @method('PATCH')
+
+        <button type="submit">
+            Desistir da candidatura
+        </button>
+    </form>
+
+    @endif
 </div>
 
 @endforeach

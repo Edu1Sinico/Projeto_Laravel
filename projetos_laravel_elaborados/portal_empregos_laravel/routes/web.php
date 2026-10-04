@@ -72,6 +72,9 @@ Route::middleware(['auth', 'tipo:1'])->group(function () {
     Route::get('/minhas-candidaturas', [InscricaoController::class, 'index'])
         ->name('inscricoes.index');
 
+    // Função de cancelamento/desistência da vaga
+    Route::patch('/inscricoes/{inscricao}/cancelar', [InscricaoController::class, 'cancelar'])
+        ->name('inscricoes.cancelar');
     
 });
 
