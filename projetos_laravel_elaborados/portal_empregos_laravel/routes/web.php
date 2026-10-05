@@ -64,6 +64,10 @@ Route::middleware(['auth', 'tipo:1'])->group(function () {
     Route::get('/vagas-disponiveis', [VagaController::class, 'vagasDisponiveis'])
         ->name('vagas.disponiveis');
 
+    // Detalhes da vaga
+    Route::get('/vagas-disponiveis/{vaga}', [VagaController::class, 'detalhes'])
+        ->name('vagas.detalhes');
+
     // Inscrição para vaga
     Route::post('/vagas/{vaga}/candidatar', [InscricaoController::class, 'store'])
         ->name('inscricoes.store');
@@ -98,6 +102,4 @@ Route::middleware(['auth', 'tipo:2'])->group(function () {
 
     Route::patch('/inscricoes/{inscricao}/rejeitar', [InscricaoController::class, 'rejeitar'])
         ->name('inscricoes.rejeitar');
-
-    
 });

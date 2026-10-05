@@ -35,6 +35,19 @@ class VagaController
         return view('vagas.disponiveis', compact('vagas'));
     }
 
+    // Método exclusivo para candidatos (exibi os detalhes das vagas disponíveis)
+    public function detalhes(Vaga $vaga)
+    {
+        $statusDisponivel = Status_Vaga::where('status', 'Disponível')
+            ->firstOrFail();
+
+        if ($vaga->idStatus != $statusDisponivel->id) {
+            abort(404, 'Vaga não disponível.');
+        }
+
+        return view('vagas.detalhes', compact('vaga'));
+    }
+
     // Exibe o formulário de cadastro das vagas
     public function create()
     {

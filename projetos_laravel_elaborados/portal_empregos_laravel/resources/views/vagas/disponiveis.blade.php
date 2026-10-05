@@ -26,12 +26,6 @@
         {{ $vaga->statusVaga->status }}
     </p>
 
-    <p>
-        <strong>Descrição:</strong>
-        {{ $vaga->descricao }}
-    </p>
-
-
     <p><strong>Localização:</strong> {{$vaga->localizacao}}</p>
 
     <p><strong>Salário:</strong>
@@ -48,6 +42,12 @@
         {{ $vaga->created_at }}
     </p>
 
+    <a href="{{ route('vagas.detalhes', $vaga) }}">
+        Ver detalhes
+    </a>
+
+    <br><br>
+
     <form
         action="{{ route('inscricoes.store', $vaga) }}"
         method="POST">
@@ -60,6 +60,8 @@
     </form>
 
 </div>
+
+<hr>
 
 @endforeach
 
