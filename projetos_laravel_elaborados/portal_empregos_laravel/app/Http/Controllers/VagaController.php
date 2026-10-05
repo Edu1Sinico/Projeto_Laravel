@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Vaga;
 use App\Models\Status_vaga;
+use App\Models\Inscricao;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -44,8 +45,14 @@ class VagaController
         if ($vaga->idStatus != $statusDisponivel->id) {
             abort(404, 'Vaga não disponível.');
         }
+        
+        // Permite filtrar por um status específico para vaga (ex.: desistência -> "candidatar-se novamente")
+        $inscricao = Inscricao::where('idCandidato', Auth::id())
+            ->where('idVaga', $vaga->id)
+            ->with('statusInscricao')
+            ->first();
 
-        return view('vagas.detalhes', compact('vaga'));
+        return view('vagas.detalhes', compact('vaga', 'inscricao'));
     }
 
     // Exibe o formulário de cadastro das vagas
