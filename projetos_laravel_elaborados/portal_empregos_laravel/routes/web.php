@@ -75,7 +75,6 @@ Route::middleware(['auth', 'tipo:1'])->group(function () {
     // Função de cancelamento/desistência da vaga
     Route::patch('/inscricoes/{inscricao}/cancelar', [InscricaoController::class, 'cancelar'])
         ->name('inscricoes.cancelar');
-    
 });
 
 // GRUPO DE EMPRESAS
@@ -88,4 +87,17 @@ Route::middleware(['auth', 'tipo:2'])->group(function () {
 
     Route::patch('/vagas/{vaga}/fechar', [VagaController::class, 'fechar'])
         ->name('vagas.fechar');
+
+    // Função para buscar todas as inscrições de uma vaga específica
+    Route::get('/vagas/{vaga}/inscricoes', [InscricaoController::class, 'inscricoesPorVaga'])
+        ->name('inscricoes.empresa');
+
+    // Funções de aprovar ou rejeitar as candidaturas
+    Route::patch('/inscricoes/{inscricao}/aprovar', [InscricaoController::class, 'aprovar'])
+        ->name('inscricoes.aprovar');
+
+    Route::patch('/inscricoes/{inscricao}/rejeitar', [InscricaoController::class, 'rejeitar'])
+        ->name('inscricoes.rejeitar');
+
+    
 });

@@ -70,6 +70,8 @@
 
 </div>
 
+<hr>
+
 @endforeach
 
 @endif

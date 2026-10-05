@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\Auth;
 
 class InscricaoController
 {
+
+    // FUNÇÕES DOS CANDIDATOS
+
     // Criação do método de inscrição para vaga
     public function store(Vaga $vaga)
     {
@@ -52,7 +55,7 @@ class InscricaoController
                 return back()
                     ->with('success', 'Candidatura realizada novamente com sucesso.');
             }
-            
+
             // Caso a inscrição já existir e não estiver com status "desistência", ele retorna essa mensagem.
             return back()
                 ->with('error', 'Você já possui uma candidatura para esta vaga.');
@@ -99,5 +102,59 @@ class InscricaoController
         return redirect()
             ->route('inscricoes.index')
             ->with('success', 'Candidatura cancelada com sucesso.');
+    }
+
+    // FUNÇÃO DAS EMPRESAS
+
+    // Busca todas as inscrições relacionadas à essa vaga
+    public function inscricoesPorVaga(Vaga $vaga)
+    {
+        // Verifica se aquela vaga pertence à empresa
+        if ($vaga->idEmpresa != Auth::id()) {
+            abort(403, 'Acesso não autorizado.');
+        }
+
+        // Busca todas as inscrições relacionadas a esta vaga
+        $inscricoes = Inscricao::where('idVaga', $vaga->id)
+            ->with(['statusInscricao', 'candidato.curriculo'])
+            ->get();
+
+        return view('inscricoes.empresa', compact('vaga', 'inscricoes'));
+    }
+
+    // Função de aprovar candidatura
+    public function aprovar(Inscricao $inscricao)
+    {
+        if ($inscricao->vaga->idEmpresa != Auth::id()) {
+            abort(403, 'Acesso não autorizado.');
+        }
+
+        $statusAprovado = Status_Inscricao::where('status', 'aprovado')
+            ->firstOrFail();
+
+        $inscricao->update([
+            'idStatus' => $statusAprovado->id,
+        ]);
+
+        return back()
+            ->with('success', 'Candidatura aprovada com sucesso.');
+    }
+
+    // Função de rejeitar candidatura
+    public function rejeitar(Inscricao $inscricao)
+    {
+        if ($inscricao->vaga->idEmpresa != Auth::id()) {
+            abort(403, 'Acesso não autorizado.');
+        }
+
+        $statusRejeitado = Status_Inscricao::where('status', 'rejeitado')
+            ->firstOrFail();
+
+        $inscricao->update([
+            'idStatus' => $statusRejeitado->id,
+        ]);
+
+        return back()
+            ->with('success', 'Candidatura rejeitada com sucesso.');
     }
 }

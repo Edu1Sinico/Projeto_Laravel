@@ -14,4 +14,10 @@ class Usuario extends Authenticatable
         'senha',
         'idTipoUsuario',
     ];
+
+    // Relacionamento com o currículo
+    public function curriculo()
+    {
+        return $this->hasOne(Curriculo::class, 'idUsuario');
+    }
 }
