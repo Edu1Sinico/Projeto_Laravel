@@ -33,8 +33,7 @@ Funcionais:
 • RF06: Autenticação dos usuários
 • RF07: Dashboards para administração das funcionalidades:
 	- Empresas poderão checar quantos candidatos se candidataram para vaga
-	- Empresas poderão ver o aumento de candidatos na plataforma em um setor específico
-	- Candidatos poderão total de inscrições realizadas para uma determinada vaga
+	- Candidatos poderão visualizar o total de candidaturas realizadas.
 
 Não Funcionais:
 
@@ -112,7 +111,7 @@ Atributos de cada entidade:
 
 • Tipo_usuario
 	- id
-	- tipo (empresa, candidato, administrador)
+	- tipo (empresa, candidato)
 
 • Status_vaga
 	- id

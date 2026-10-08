@@ -35,7 +35,7 @@
     </button>
 </form>
 
-@elseif ($inscricao->statusInscricao->status === 'desistência')
+@elseif ($inscricao->statusInscricao->status === 'Desistência')
 
 <form action="{{ route('inscricoes.store', $vaga) }}" method="POST">
     @csrf

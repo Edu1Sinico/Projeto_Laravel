@@ -6,34 +6,42 @@ use App\Http\Controllers\InscricaoController;
 use App\Http\Controllers\VagaController;
 use Illuminate\Support\Facades\Route;
 
+// ROTAS PÚBLICAS
+
+Route::middleware('guest')->group(function () {
+
+    // Rota para a tela de login (Apenas exibe o formulário, por isso o método GET)
+    Route::get('/login', [UsuarioController::class, 'showLoginForm'])
+        ->name('login'); // Indica a rota (função) que será executado
+
+    // Rota para a função de login
+    Route::post('/login', [UsuarioController::class, 'login'])
+        ->name('usuarios.login.entrar');
+
+    // Rota para a tela de registro (Apenas exibe o formulário, por isso o método GET)
+    Route::get('/registro', [UsuarioController::class, 'showRegistroForm'])
+        ->name('usuarios.registro');
+
+    // Rota para a função de cadastro
+    Route::post('/registro', [UsuarioController::class, 'registro'])
+        ->name('usuarios.registro.salvar');
+});
 
 
+// ROTAS DOS USUÁRIOS AUTENTICADOS
 
-// Rota de testes para a página 'home'
-Route::get('/home', function () {
-    return view('home');
-})->middleware('auth')->name('home');
 // O middleware auth impede que o usuário acesse a página sem estar logado.
+Route::middleware('auth')->group(function () {
 
-// Rota para a tela de login (Apenas exibe o formulário, por isso o método GET)
-Route::get('/login', [UsuarioController::class, 'showLoginForm'])
-    ->name('login'); // Indica a rota (função) que será executado
+    // Rota de testes para a página 'home'
+    Route::get('/home', function () {
+        return view('home');
+    })->name('home');
 
-// Rota para a função de login
-Route::post('/login', [UsuarioController::class, 'login'])
-    ->name('usuarios.login.entrar');
-
-// Rota para a tela de registro (Apenas exibe o formulário, por isso o método GET)
-Route::get('/registro', [UsuarioController::class, 'showRegistroForm'])
-    ->name('usuarios.registro');
-
-// Rota para a função de cadastro
-Route::post('/registro', [UsuarioController::class, 'registro'])
-    ->name('usuarios.registro.salvar');
-
-// Rota para a função de logout
-Route::post('/logout', [UsuarioController::class, 'logout'])
-    ->name('usuarios.logout');
+    // Função de Logout
+    Route::post('/logout', [UsuarioController::class, 'logout'])
+        ->name('usuarios.logout');
+});
 
 // GRUPO DE CANDIDATOS
 
@@ -58,7 +66,7 @@ Route::middleware(['auth', 'tipo:1'])->group(function () {
     Route::delete('/curriculo', [CurriculoController::class, 'destroy'])
         ->name('curriculos.destroy');
 
-    // INSCRIÇÕES PARA VAGAS
+    // CONSULTA DE VAGAS
 
     // Consultas de vagas disponíveis para inscrição (exclusivo para candidatos)
     Route::get('/vagas-disponiveis', [VagaController::class, 'vagasDisponiveis'])
@@ -67,6 +75,8 @@ Route::middleware(['auth', 'tipo:1'])->group(function () {
     // Detalhes da vaga
     Route::get('/vagas-disponiveis/{vaga}', [VagaController::class, 'detalhes'])
         ->name('vagas.detalhes');
+
+    // INSCRIÇÕES PARA VAGAS
 
     // Inscrição para vaga
     Route::post('/vagas/{vaga}/candidatar', [InscricaoController::class, 'store'])

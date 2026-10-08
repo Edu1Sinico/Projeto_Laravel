@@ -9,7 +9,6 @@ class Tipo_usuario extends Model
     protected $table = 'tipo_usuario';
 
     protected $fillable =  [
-        'id',
         'tipo'
     ];
 }

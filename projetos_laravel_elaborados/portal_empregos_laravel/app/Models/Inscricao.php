@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Inscricao extends Model
 {
     protected $fillable = [
-        'id',
         'idCandidato',
         'idVaga',
         'idStatus',

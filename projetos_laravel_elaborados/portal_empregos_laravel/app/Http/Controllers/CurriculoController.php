@@ -11,9 +11,10 @@ use Illuminate\Support\Facades\Storage;
 class CurriculoController extends Controller
 {
     // Exibe o formulário de currículo
-    public function show(Curriculo $curriculo)
+    public function show()
     {
-        $curriculo = Curriculo::where('idUsuario', Auth::id())->first();
+        // Utiliza do método privado de busca do currículo.
+        $curriculo = $this->buscarCurriculoUsuario();
 
         return view('curriculos.show', compact('curriculo'));
     }
@@ -36,26 +37,25 @@ class CurriculoController extends Controller
         $arquivo = $request->file('curriculo');
 
         // Realiza a busca do currículo a partir do ID do usuário autenticado, para ver se ele existe.
-        $curriculoExistente = Curriculo::where(
-            'idUsuario',
-            Auth::id()
-        )->first();
+        $curriculoExistente = $this->buscarCurriculoUsuario();
 
         // Ela salva fisicamente o PDF e retorna o caminho relativo
-        $caminho = $arquivo->store('curriculos', 'public');
+        $caminho = $curriculoExistente->arquivoCaminho;
 
         // Se o curriculo existir, ele apaga o existente e substitui por um novo.
         if ($curriculoExistente) {
-            // Apaga o curriculo armazenado no caminho anterior
-            Storage::disk('public')->delete(
-                $curriculoExistente->arquivoCaminho
-            );
+
+            // Salva o caminho do currículo antigo.
+            $caminhoAntigo = $curriculoExistente->arquivoCaminho;
 
             // Atualiza para os novos dados do novo currículo
             $curriculoExistente->update([
                 'arquivoCaminho' => $caminho,
-                'arquivoNome' => $arquivo->getClientOriginalName()
+                'arquivoNome' => $arquivo->getClientOriginalName(),
             ]);
+
+            // Apaga o curriculo armazenado no caminho anterior
+            Storage::disk('public')->delete($caminhoAntigo);
         } else {
             // Criação do currículo
             Curriculo::create([
@@ -68,14 +68,14 @@ class CurriculoController extends Controller
 
         // Redirecionando para a página do currículo com uma mensagem de sucesso.
         return redirect()
-            ->route('curriculos.create')
+            ->route('curriculos.show')
             ->with('success', 'Currículo cadastrado com sucesso.');
     }
 
     // Função para remover o currículo
     public function destroy()
     {
-        $curriculo = Curriculo::where('idUsuario', Auth::id())->first();
+        $curriculo = $this->buscarCurriculoUsuario();
 
         // Retorna para tela inicial do currículo com um erro, caso não encontre o currículo cadastrado.
         if (!$curriculo) {
@@ -94,4 +94,13 @@ class CurriculoController extends Controller
             ->route('curriculos.show')
             ->with('success', 'Currículo removido com sucesso.');
     }
+
+    // FUNÇÕES PRIVADAS PARA EVITAR REDUNDÂNCIAS
+
+    // Método responsável pelas buscas dos currículos para os usuários autenticados.
+    private function buscarCurriculoUsuario()
+    {
+        return Curriculo::where('idUsuario', Auth::id())->first();
+    }
+    
 }

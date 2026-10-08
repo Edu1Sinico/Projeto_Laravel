@@ -6,9 +6,10 @@ use App\Models\Vaga;
 use App\Models\Status_vaga;
 use App\Models\Inscricao;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 
-class VagaController
+class VagaController extends Controller
 {
     // Exibe somente as vagas da empresa autenticada
     public function index()
@@ -24,7 +25,7 @@ class VagaController
     public function vagasDisponiveis()
     {
         // filtra os status "disponível"
-        $statusDisponivel = Status_vaga::where('status', 'Disponível')->firstOrFail();
+        $statusDisponivel = $this->buscarStatusDisponivel();
 
         // Filtra as vagas disponíveis
         $vagas = Vaga::where(
@@ -39,13 +40,13 @@ class VagaController
     // Método exclusivo para candidatos (exibi os detalhes das vagas disponíveis)
     public function detalhes(Vaga $vaga)
     {
-        $statusDisponivel = Status_Vaga::where('status', 'Disponível')
+        $statusDisponivel = Status_vaga::where('status', 'Disponível')
             ->firstOrFail();
 
         if ($vaga->idStatus != $statusDisponivel->id) {
             abort(404, 'Vaga não disponível.');
         }
-        
+
         // Permite filtrar por um status específico para vaga (ex.: desistência -> "candidatar-se novamente")
         $inscricao = Inscricao::where('idCandidato', Auth::id())
             ->where('idVaga', $vaga->id)
@@ -73,7 +74,7 @@ class VagaController
         ]);
 
         // Buscando o status padrão de uma nova vaga
-        $statusDisponivel = Status_vaga::where('status', 'Disponível')->firstOrFail();
+        $statusDisponivel = $this->buscarStatusDisponivel();
 
         // Verificando quantas vagas abertas a empresa possui
         $quantidadeVagas = Vaga::where('idEmpresa', Auth::id())
@@ -98,16 +99,14 @@ class VagaController
 
         return redirect()
             ->route('vagas.index')
-            ->with('sucess', 'Vaga cadastrada com sucesso.');
+            ->with('success', 'Vaga cadastrada com sucesso.');
     }
 
     // Exibir os dados da vaga única
     public function show(Vaga $vaga)
     {
         // Garante que outras empresas não acessem vagas que não pertencem a elas.
-        if ($vaga->idEmpresa != Auth::id()) {
-            abort(403, 'Acesso não autorizado.');
-        }
+        $this->validarProprietario($vaga);
 
         return view('vagas.show', compact('vaga'));
     }
@@ -116,9 +115,7 @@ class VagaController
     public function edit(Vaga $vaga)
     {
         // Garante que outras empresas não acessem vagas que não pertencem a elas.
-        if ($vaga->idEmpresa != Auth::id()) {
-            abort(403, 'Acesso não autorizado.');
-        }
+        $this->validarProprietario($vaga);
 
         return view('vagas.edit', compact('vaga'));
     }
@@ -127,9 +124,7 @@ class VagaController
     public function update(Request $request, Vaga $vaga)
     {
         // Garante que outras empresas não acessem vagas que não pertencem a elas.
-        if ($vaga->idEmpresa != Auth::id()) {
-            abort(403, 'Acesso não autorizado.');
-        }
+        $this->validarProprietario($vaga);
 
         $dados = $request->validate([
             'titulo' => 'required|string|max:255',
@@ -154,9 +149,7 @@ class VagaController
     public function destroy(Vaga $vaga)
     {
         // Garante que outras empresas não acessem vagas que não pertencem a elas.
-        if ($vaga->idEmpresa != Auth::id()) {
-            abort(403, 'Acesso não autorizado.');
-        }
+        $this->validarProprietario($vaga);
 
         $vaga->delete();
 
@@ -169,12 +162,16 @@ class VagaController
     public function fechar(Vaga $vaga)
     {
         // Garante que outras empresas não acessem vagas que não pertencem a elas.
-        if ($vaga->idEmpresa != Auth::id()) {
-            abort(403, 'Acesso não autorizado.');
-        }
+        $this->validarProprietario($vaga);
 
         // Buscando o status de fechamento papra uma vaga existente
-        $statusIndisponivel = Status_vaga::where('status', 'Indisponível')->firstOrFail();
+        $statusIndisponivel = $this->buscarStatusIndisponivel();
+
+        // Verifica se a vaga já foi fechada
+        if ($vaga->idStatus == $statusIndisponivel->id) {
+            return back()
+                ->with('error', 'Esta vaga já está fechada.');
+        }
 
         // Atualiza os status da vaga e sua data de fechamento
         $vaga->update([
@@ -185,5 +182,27 @@ class VagaController
         return redirect()
             ->route('vagas.show', $vaga)
             ->with('success', 'Vaga fechada com sucesso.');
+    }
+
+    // FUNÇÕES PRIVADAS PARA EVITAR REDUNDÂNCIAS
+
+    // Função que garante que outras empresas não acessem vagas que não pertencem a elas.
+    private function validarProprietario(Vaga $vaga): void
+    {
+        if ($vaga->idEmpresa != Auth::id()) {
+            abort(403, 'Acesso não autorizado.');
+        }
+    }
+
+    // Buscando o status padrão de uma nova vaga
+    private function buscarStatusDisponivel()
+    {
+        return Status_vaga::where('status', 'Disponível')->firstOrFail();
+    }
+
+    // Buscando o status padrão de uma nova vaga
+    private function buscarStatusIndisponivel()
+    {
+        return Status_vaga::where('status', 'Indisponível')->firstOrFail();
     }
 }

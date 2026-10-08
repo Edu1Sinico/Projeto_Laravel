@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('inscricaos', function (Blueprint $table) {
             $table->id();
             $table->foreignId('idCandidato')->constrained('usuarios');
-            $table->foreignId('idVaga')->constrained('vagas');
+            $table->foreignId('idVaga')->constrained('vagas')->cascadeOnDelete();
             $table->foreignId('idStatus')->constrained('status_inscricao');
             $table->timestamps();
         });
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('inscricoes');
+        Schema::dropIfExists('inscricaos');
     }
 };

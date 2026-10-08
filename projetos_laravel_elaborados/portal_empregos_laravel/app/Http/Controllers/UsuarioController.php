@@ -31,7 +31,7 @@ class UsuarioController extends Controller
         // Realiza a checagem das informações (Se o usuário não foi encontrado OU se a senha digitada não bate com a senha do banco)
         if (!$usuario || !Hash::check($dados['senha'], $usuario->senha)) {
             return back()
-                ->withErros([
+                ->withErrors([
                     'email' => 'E-mail ou senha inválidos.',
                 ])
                 ->onlyInput('email');
@@ -89,6 +89,6 @@ class UsuarioController extends Controller
 
         return redirect()
             ->route('login')
-            ->with('sucess', 'Logout realizado com sucesso.');
+            ->with('success', 'Logout realizado com sucesso.');
     }
 }
