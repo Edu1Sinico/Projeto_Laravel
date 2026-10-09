@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Vaga;
 use App\Models\Status_vaga;
 use App\Models\Inscricao;
+use App\Models\Curriculo;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -40,8 +41,7 @@ class VagaController extends Controller
     // Método exclusivo para candidatos (exibi os detalhes das vagas disponíveis)
     public function detalhes(Vaga $vaga)
     {
-        $statusDisponivel = Status_vaga::where('status', 'Disponível')
-            ->firstOrFail();
+        $statusDisponivel = $this->buscarStatusDisponivel();
 
         if ($vaga->idStatus != $statusDisponivel->id) {
             abort(404, 'Vaga não disponível.');
@@ -53,7 +53,11 @@ class VagaController extends Controller
             ->with('statusInscricao')
             ->first();
 
-        return view('vagas.detalhes', compact('vaga', 'inscricao'));
+        // Realiza a consulta do currículo
+        $curriculo = Curriculo::where('idUsuario', Auth::id())
+            ->first();
+
+        return view('vagas.detalhes', compact('vaga', 'inscricao', 'curriculo'));
     }
 
     // Exibe o formulário de cadastro das vagas

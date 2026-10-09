@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Inscricao;
 use App\Models\Status_inscricao;
 use App\Models\Status_vaga;
+use App\Models\Curriculo;
 use App\Models\Vaga;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -17,8 +18,15 @@ class InscricaoController extends Controller
     // Criação do método de inscrição para vaga
     public function store(Vaga $vaga)
     {
+
+        // Verifica se o candidato possui currículo
+        if (!$this->candidatoPossuiCurriculo()) {
+            return back()
+                ->with('error', 'Você precisa cadastrar um currículo antes de se candidatar a uma vaga.');
+        }
+
         // Verifica se a vaga está disponível
-        $statusDisponivel = $this->buscarStatusVagas("Disponível");
+        $statusDisponivel = $this->buscarStatusVaga("Disponível");
 
         if ($vaga->idStatus != $statusDisponivel->id) {
             return back()
@@ -191,6 +199,12 @@ class InscricaoController extends Controller
         }
     }
 
+    // Realizar a verificação se o usuário possuí curriculos
+    private function candidatoPossuiCurriculo(): bool
+    {
+        return Curriculo::where('idUsuario', Auth::id())->exists();
+    }
+
     // Realiza a busca dos status de acordo com o que for enviado
     private function buscarStatusInscricao(string $status)
     {
@@ -199,7 +213,7 @@ class InscricaoController extends Controller
     }
 
     // Buscando o status padrão de uma nova vaga
-    private function buscarStatusVagas(string $status)
+    private function buscarStatusVaga(string $status)
     {
         return Status_vaga::where('status', $status)->firstOrFail();
     }

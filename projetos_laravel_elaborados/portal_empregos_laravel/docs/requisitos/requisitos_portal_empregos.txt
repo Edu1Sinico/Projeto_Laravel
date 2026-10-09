@@ -51,6 +51,7 @@ Não Funcionais:
 • Um candidato pode possuir apenas um currículo ativo (substituir o currículo anterior).
 • Empresas possuem um limite de cadastro de vagas simultâneas (máximo 10)
 • Um candidato não pode se inscrever duas vezes na mesma vaga.
+• Um candidato precisa de um currículo para se inscrever na vaga.
 • Apenas usuários do tipo empresa podem criar, alterar, fechar ou excluir vagas.
 • Uma empresa só pode alterar/excluir vagas pertencentes a ela.
 • Apenas candidatos podem se candidatar a vagas.

@@ -30,9 +30,26 @@
 <form action="{{ route('inscricoes.store', $vaga) }}" method="POST">
     @csrf
 
-    <button type="submit">
-        Candidatar-se
-    </button>
+    @if (!$curriculo)
+
+    <p>Cadastre seu currículo para se candidatar.</p>
+
+    <a href="{{ route('curriculos.create') }}">
+        Cadastrar currículo
+    </a>
+
+    @else
+
+    <form action="{{ route('inscricoes.store', $vaga) }}" method="POST">
+        @csrf
+
+        <button type="submit">
+            Candidatar-se
+        </button>
+    </form>
+
+    @endif
+
 </form>
 
 @elseif ($inscricao->statusInscricao->status === 'Desistência')

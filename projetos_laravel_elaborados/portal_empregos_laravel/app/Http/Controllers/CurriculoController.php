@@ -33,14 +33,14 @@ class CurriculoController extends Controller
             'curriculo' => 'required|file|mimes:pdf|max:2048'
         ]);
 
-        // Pegando o arquivo recebido em armazenando em uma variável
+        // Arquivo enviado pelo usuário
         $arquivo = $request->file('curriculo');
 
-        // Realiza a busca do currículo a partir do ID do usuário autenticado, para ver se ele existe.
+        // Busca o currículo atual do usuário, caso exista
         $curriculoExistente = $this->buscarCurriculoUsuario();
 
-        // Ela salva fisicamente o PDF e retorna o caminho relativo
-        $caminho = $curriculoExistente->arquivoCaminho;
+        // Salva o NOVO arquivo e retorna seu caminho
+        $caminho = $arquivo->store('curriculos', 'public');
 
         // Se o curriculo existir, ele apaga o existente e substitui por um novo.
         if ($curriculoExistente) {
@@ -57,14 +57,14 @@ class CurriculoController extends Controller
             // Apaga o curriculo armazenado no caminho anterior
             Storage::disk('public')->delete($caminhoAntigo);
         } else {
-            // Criação do currículo
+
+            // Primeiro currículo do usuário
             Curriculo::create([
-                'idUsuario' => Auth::id(), // Pega o id do usuário a partir da autenticação
+                'idUsuario' => Auth::id(),
                 'arquivoCaminho' => $caminho,
                 'arquivoNome' => $arquivo->getClientOriginalName(), // Método para buscar o nome original do arquivo
             ]);
         }
-
 
         // Redirecionando para a página do currículo com uma mensagem de sucesso.
         return redirect()
@@ -102,5 +102,4 @@ class CurriculoController extends Controller
     {
         return Curriculo::where('idUsuario', Auth::id())->first();
     }
-    
 }
